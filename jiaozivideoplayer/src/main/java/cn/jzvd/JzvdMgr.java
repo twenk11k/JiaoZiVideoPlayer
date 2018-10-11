@@ -7,26 +7,26 @@ package cn.jzvd;
  */
 public class JzvdMgr {
 
-    public static Jzvd FIRST_FLOOR_JZVD;
-    public static Jzvd SECOND_FLOOR_JZVD;
+    public static com.ardakalan.muzikplayer.calisma.video.Jzvd FIRST_FLOOR_JZVD;
+    public static com.ardakalan.muzikplayer.calisma.video.Jzvd SECOND_FLOOR_JZVD;
 
-    public static Jzvd getFirstFloor() {
+    public static com.ardakalan.muzikplayer.calisma.video.Jzvd getFirstFloor() {
         return FIRST_FLOOR_JZVD;
     }
 
-    public static void setFirstFloor(Jzvd jzvd) {
+    public static void setFirstFloor(com.ardakalan.muzikplayer.calisma.video.Jzvd jzvd) {
         FIRST_FLOOR_JZVD = jzvd;
     }
 
-    public static Jzvd getSecondFloor() {
+    public static com.ardakalan.muzikplayer.calisma.video.Jzvd getSecondFloor() {
         return SECOND_FLOOR_JZVD;
     }
 
-    public static void setSecondFloor(Jzvd jzvd) {
+    public static void setSecondFloor(com.ardakalan.muzikplayer.calisma.video.Jzvd jzvd) {
         SECOND_FLOOR_JZVD = jzvd;
     }
 
-    public static Jzvd getCurrentJzvd() {
+    public static com.ardakalan.muzikplayer.calisma.video.Jzvd getCurrentJzvd() {
         if (getSecondFloor() != null) {
             return getSecondFloor();
         }

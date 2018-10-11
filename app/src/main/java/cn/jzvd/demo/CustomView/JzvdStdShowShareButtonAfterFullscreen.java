@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import cn.jzvd.JZDataSource;
-import cn.jzvd.JzvdStd;
 import cn.jzvd.demo.R;
 
 /**

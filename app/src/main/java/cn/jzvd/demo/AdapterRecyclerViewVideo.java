@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
-
 public class AdapterRecyclerViewVideo extends RecyclerView.Adapter<AdapterRecyclerViewVideo.MyViewHolder> {
 
     public static final String TAG = "AdapterRecyclerViewVideo";

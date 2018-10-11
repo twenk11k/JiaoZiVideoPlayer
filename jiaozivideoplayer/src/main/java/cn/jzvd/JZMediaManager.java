@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 
+
 /**
  * 这个类用来和jzvd互相调用，当jzvd需要调用Media的时候调用这个类，当MediaPlayer有回调的时候，通过这个类回调JZVD
  * Created by Nathen on 2017/11/18.
@@ -48,7 +49,6 @@ public class JZMediaManager implements TextureView.SurfaceTextureListener {
         return jzMediaManager;
     }
 
-    //这几个方法是不是多余了，为了不让其他地方动MediaInterface的方法
     public static void setDataSource(JZDataSource jzDataSource) {
         instance().jzMediaInterface.jzDataSource = jzDataSource;
     }

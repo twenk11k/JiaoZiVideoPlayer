@@ -6,9 +6,6 @@ import android.view.Surface;
 
 import java.io.IOException;
 
-import cn.jzvd.JZMediaInterface;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JzvdMgr;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkTimedText;

@@ -14,9 +14,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by Nathen
  * On 2016/05/23 21:34

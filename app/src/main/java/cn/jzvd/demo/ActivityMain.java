@@ -10,10 +10,6 @@ import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.JZUserAction;
-import cn.jzvd.JZUserActionStd;
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
 import cn.jzvd.demo.CustomView.MyJzvdStd;
 
 /**

@@ -5,8 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
-import cn.jzvd.Jzvd;
-
 /**
  * Created by Nathen on 16/7/31.
  */

@@ -11,10 +11,6 @@ import android.widget.AbsoluteLayout;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.JZUtils;
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by Nathen on 16/10/13.
  */

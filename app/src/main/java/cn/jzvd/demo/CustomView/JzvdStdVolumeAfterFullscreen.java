@@ -3,9 +3,6 @@ package cn.jzvd.demo.CustomView;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by pc on 2018/1/17.
  */

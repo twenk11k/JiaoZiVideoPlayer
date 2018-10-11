@@ -11,8 +11,6 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.jzvd.Jzvd;
-
 /**
  * Created by Nathen
  * On 2016/02/07 01:01

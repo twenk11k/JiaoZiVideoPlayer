@@ -5,7 +5,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import cn.jzvd.JzvdStd;
 import cn.jzvd.demo.R;
 
 /**

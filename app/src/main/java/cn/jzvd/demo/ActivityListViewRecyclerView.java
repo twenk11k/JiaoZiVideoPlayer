@@ -8,10 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdMgr;
-
 /**
  * Created by yujunkui on 16/8/29.
  */

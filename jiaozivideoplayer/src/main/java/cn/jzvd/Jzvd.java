@@ -31,6 +31,7 @@ import java.lang.reflect.Constructor;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
 /**
  * Created by Nathen on 16/7/30.
  */
@@ -153,15 +154,15 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         JZUtils.setRequestedOrientation(context, FULLSCREEN_ORIENTATION);
         ViewGroup vp = (JZUtils.scanForActivity(context))//.getWindow().getDecorView();
                 .findViewById(Window.ID_ANDROID_CONTENT);
-        View old = vp.findViewById(R.id.jz_fullscreen_id);
+        View old = vp.findViewById(cn.jzvd.R.id.jz_fullscreen_id);
         if (old != null) {
             vp.removeView(old);
         }
         try {
             Constructor<Jzvd> constructor = _class.getConstructor(Context.class);
             final Jzvd jzvd = constructor.newInstance(context);
-            jzvd.setId(R.id.jz_fullscreen_id);
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+            jzvd.setId(cn.jzvd.R.id.jz_fullscreen_id);
+            LayoutParams lp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             vp.addView(jzvd, lp);
 //            final Animation ra = AnimationUtils.loadAnimation(context, R.anim.start_fullscreen);
@@ -189,8 +190,10 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
                         JZUserAction.ON_QUIT_FULLSCREEN :
                         JZUserAction.ON_QUIT_TINYSCREEN);
                 JzvdMgr.getFirstFloor().playOnThisJzvd();
+                Log.d("oramagoma","if1");
             } else {
                 quitFullscreenOrTinyWindow();
+                Log.d("oramagoma","else1");
             }
             return true;
         } else if (JzvdMgr.getFirstFloor() != null &&
@@ -198,6 +201,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
                         JzvdMgr.getFirstFloor().currentScreen == SCREEN_WINDOW_TINY)) {//以前我总想把这两个判断写到一起，这分明是两个独立是逻辑
             CLICK_QUIT_FULLSCREEN_TIME = System.currentTimeMillis();
             quitFullscreenOrTinyWindow();
+            Log.d("oramagoma","else2");
             return true;
         }
         return false;
@@ -362,14 +366,14 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
 
     public void init(Context context) {
         View.inflate(context, getLayoutId(), this);
-        startButton = findViewById(R.id.start);
-        fullscreenButton = findViewById(R.id.fullscreen);
-        progressBar = findViewById(R.id.bottom_seek_progress);
-        currentTimeTextView = findViewById(R.id.current);
-        totalTimeTextView = findViewById(R.id.total);
-        bottomContainer = findViewById(R.id.layout_bottom);
-        textureViewContainer = findViewById(R.id.surface_container);
-        topContainer = findViewById(R.id.layout_top);
+        startButton = findViewById(cn.jzvd.R.id.start);
+        fullscreenButton = findViewById(cn.jzvd.R.id.fullscreen);
+        progressBar = findViewById(cn.jzvd.R.id.bottom_seek_progress);
+        currentTimeTextView = findViewById(cn.jzvd.R.id.current);
+        totalTimeTextView = findViewById(cn.jzvd.R.id.total);
+        bottomContainer = findViewById(cn.jzvd.R.id.layout_bottom);
+        textureViewContainer = findViewById(cn.jzvd.R.id.surface_container);
+        topContainer = findViewById(cn.jzvd.R.id.layout_top);
 
         startButton.setOnClickListener(this);
         fullscreenButton.setOnClickListener(this);
@@ -430,10 +434,10 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         int i = v.getId();
-        if (i == R.id.start) {
+        if (i == cn.jzvd.R.id.start) {
             Log.i(TAG, "onClick start [" + this.hashCode() + "] ");
             if (jzDataSource.urlsMap.isEmpty() || jzDataSource.getCurrentUrl() == null) {
-                Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getResources().getString(cn.jzvd.R.string.no_url), Toast.LENGTH_SHORT).show();
                 return;
             }
             if (currentState == CURRENT_STATE_NORMAL) {
@@ -458,7 +462,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
                 onEvent(JZUserAction.ON_CLICK_START_AUTO_COMPLETE);
                 startVideo();
             }
-        } else if (i == R.id.fullscreen) {
+        } else if (i == cn.jzvd.R.id.fullscreen) {
             Log.i(TAG, "onClick fullscreen [" + this.hashCode() + "] ");
             if (currentState == CURRENT_STATE_AUTO_COMPLETE) return;
             if (currentScreen == SCREEN_WINDOW_FULLSCREEN) {
@@ -477,7 +481,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         float x = event.getX();
         float y = event.getY();
         int id = v.getId();
-        if (id == R.id.surface_container) {
+        if (id == cn.jzvd.R.id.surface_container) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     Log.i(TAG, "onTouch surfaceContainer actionDown [" + this.hashCode() + "] ");
@@ -816,8 +820,8 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
 
     public void addTextureView() {
         Log.d(TAG, "addTextureView [" + this.hashCode() + "] ");
-        FrameLayout.LayoutParams layoutParams =
-                new FrameLayout.LayoutParams(
+        LayoutParams layoutParams =
+                new LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         ViewGroup.LayoutParams.MATCH_PARENT,
                         Gravity.CENTER);
@@ -834,8 +838,8 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
     public void clearFullscreenLayout() {
         ViewGroup vp = (JZUtils.scanForActivity(getContext()))//.getWindow().getDecorView();
                 .findViewById(Window.ID_ANDROID_CONTENT);
-        View oldF = vp.findViewById(R.id.jz_fullscreen_id);
-        View oldT = vp.findViewById(R.id.jz_tiny_id);
+        View oldF = vp.findViewById(cn.jzvd.R.id.jz_fullscreen_id);
+        View oldT = vp.findViewById(cn.jzvd.R.id.jz_tiny_id);
         if (oldF != null) {
             vp.removeView(oldF);
         }
@@ -850,8 +854,8 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         showSupportActionBar(getContext());
         ViewGroup vp = (JZUtils.scanForActivity(getContext()))//.getWindow().getDecorView();
                 .findViewById(Window.ID_ANDROID_CONTENT);
-        Jzvd fullJzvd = vp.findViewById(R.id.jz_fullscreen_id);
-        Jzvd tinyJzvd = vp.findViewById(R.id.jz_tiny_id);
+        Jzvd fullJzvd = vp.findViewById(cn.jzvd.R.id.jz_fullscreen_id);
+        Jzvd tinyJzvd = vp.findViewById(cn.jzvd.R.id.jz_tiny_id);
 
         if (fullJzvd != null) {
             vp.removeView(fullJzvd);
@@ -995,7 +999,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
 
         ViewGroup vp = (JZUtils.scanForActivity(getContext()))//.getWindow().getDecorView();
                 .findViewById(Window.ID_ANDROID_CONTENT);
-        View old = vp.findViewById(R.id.jz_fullscreen_id);
+        View old = vp.findViewById(cn.jzvd.R.id.jz_fullscreen_id);
         if (old != null) {
             vp.removeView(old);
         }
@@ -1003,8 +1007,8 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         try {
             Constructor<Jzvd> constructor = (Constructor<Jzvd>) Jzvd.this.getClass().getConstructor(Context.class);
             Jzvd jzvd = constructor.newInstance(getContext());
-            jzvd.setId(R.id.jz_fullscreen_id);
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+            jzvd.setId(cn.jzvd.R.id.jz_fullscreen_id);
+            LayoutParams lp = new LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             vp.addView(jzvd, lp);
             jzvd.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -1034,7 +1038,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
             return;
         ViewGroup vp = (JZUtils.scanForActivity(getContext()))//.getWindow().getDecorView();
                 .findViewById(Window.ID_ANDROID_CONTENT);
-        View old = vp.findViewById(R.id.jz_tiny_id);
+        View old = vp.findViewById(cn.jzvd.R.id.jz_tiny_id);
         if (old != null) {
             vp.removeView(old);
         }
@@ -1043,8 +1047,8 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         try {
             Constructor<Jzvd> constructor = (Constructor<Jzvd>) Jzvd.this.getClass().getConstructor(Context.class);
             Jzvd jzvd = constructor.newInstance(getContext());
-            jzvd.setId(R.id.jz_tiny_id);
-            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(400, 400);
+            jzvd.setId(cn.jzvd.R.id.jz_tiny_id);
+            LayoutParams lp = new LayoutParams(400, 400);
             lp.gravity = Gravity.RIGHT | Gravity.BOTTOM;
             vp.addView(jzvd, lp);
             jzvd.setUp(jzDataSource, JzvdStd.SCREEN_WINDOW_TINY);
@@ -1111,10 +1115,6 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         if (JZ_USER_EVENT != null && isCurrentPlay() && !jzDataSource.urlsMap.isEmpty()) {
             JZ_USER_EVENT.onEvent(type, jzDataSource.getCurrentUrl(), currentScreen);
         }
-    }
-
-    public static void setMediaInterface(JZMediaInterface mediaInterface) {
-        JZMediaManager.instance().jzMediaInterface = mediaInterface;
     }
 
     //TODO 是否有用

@@ -10,9 +10,6 @@ import android.widget.Button;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by Nathen on 2017/10/31.
  */

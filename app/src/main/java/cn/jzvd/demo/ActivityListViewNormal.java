@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-import cn.jzvd.Jzvd;
-
 /**
  * Created by Nathen on 16/7/31.
  */

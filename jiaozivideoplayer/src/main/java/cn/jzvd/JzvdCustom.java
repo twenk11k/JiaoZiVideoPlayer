@@ -8,7 +8,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.widget.PopupMenu;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -24,17 +30,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ardakalan.muzikplayer.target.share.Share;
+import com.ardakalan.muzikplayer.utils.Utils;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
-/**
- * Created by Nathen
- * On 2016/04/18 16:15
- */
-public class JzvdStd extends Jzvd {
+public class JzvdCustom extends com.ardakalan.muzikplayer.calisma.video.Jzvd  {
 
     protected static Timer DISMISS_CONTROL_VIEW_TIMER;
 
@@ -43,7 +47,7 @@ public class JzvdStd extends Jzvd {
     public TextView titleTextView;
     public ImageView thumbImageView;
     public ImageView tinyBackImageView;
-    public LinearLayout batteryTimeLayout;
+    //  public LinearLayout batteryTimeLayout;
     public ImageView batteryLevel;
     public TextView videoCurrentTime;
     public TextView replayTextView;
@@ -52,7 +56,7 @@ public class JzvdStd extends Jzvd {
     public TextView mRetryBtn;
     public LinearLayout mRetryLayout;
 
-    protected DismissControlViewTimerTask mDismissControlViewTimerTask;
+    protected JzvdCustom.DismissControlViewTimerTask mDismissControlViewTimerTask;
     protected Dialog mProgressDialog;
     protected ProgressBar mDialogProgressBar;
     protected TextView mDialogSeekTime;
@@ -65,6 +69,13 @@ public class JzvdStd extends Jzvd {
     protected Dialog mBrightnessDialog;
     protected ProgressBar mDialogBrightnessProgressBar;
     protected TextView mDialogBrightnessTextView;
+    protected ImageView orientationBtn;
+
+
+    protected LinearLayout linearBattery;
+//    protected ImageView menuBtn;
+
+
     public static long LAST_GET_BATTERYLEVEL_TIME = 0;
     public static int LAST_GET_BATTERYLEVEL_PERCENT = 70;
 
@@ -82,18 +93,22 @@ public class JzvdStd extends Jzvd {
         }
     };
 
-    public JzvdStd(Context context) {
+    public JzvdCustom(Context context) {
         super(context);
     }
 
-    public JzvdStd(Context context, AttributeSet attrs) {
+    public JzvdCustom(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
+    private LocalBroadcastManager localBroadcastManager;
 
     @Override
     public void init(Context context) {
         super.init(context);
-        batteryTimeLayout = findViewById(cn.jzvd.R.id.battery_time_layout);
+        localBroadcastManager = LocalBroadcastManager
+                .getInstance(getContext());
+        //batteryTimeLayout = findViewById(cn.jzvd.R.id.battery_time_layout);
         bottomProgressBar = findViewById(cn.jzvd.R.id.bottom_progress);
         titleTextView = findViewById(cn.jzvd.R.id.title);
         backButton = findViewById(cn.jzvd.R.id.back);
@@ -106,12 +121,22 @@ public class JzvdStd extends Jzvd {
         clarity = findViewById(cn.jzvd.R.id.clarity);
         mRetryBtn = findViewById(cn.jzvd.R.id.retry_btn);
         mRetryLayout = findViewById(cn.jzvd.R.id.retry_layout);
+        linearBattery = findViewById(R.id.linearBattery);
+        // menuBtn = findViewById(R.id.menubtn);
+
+        orientationBtn = findViewById(R.id.orientationBtn);
+        int color2 = Utils.getSecondColor(context);
+        bottomProgressBar.getProgressDrawable().setColorFilter(color2, PorterDuff.Mode.SRC_IN);
+        progressBar.getProgressDrawable().setColorFilter(color2, PorterDuff.Mode.SRC_IN);
 
         thumbImageView.setOnClickListener(this);
         backButton.setOnClickListener(this);
         tinyBackImageView.setOnClickListener(this);
         clarity.setOnClickListener(this);
         mRetryBtn.setOnClickListener(this);
+        orientationBtn.setOnClickListener(this);
+        fullscreenButton.setOnClickListener(this);
+
     }
 
     public void setUp(JZDataSource jzDataSource, int screen) {
@@ -121,7 +146,13 @@ public class JzvdStd extends Jzvd {
             fullscreenButton.setImageResource(cn.jzvd.R.drawable.jz_shrink);
             backButton.setVisibility(View.VISIBLE);
             tinyBackImageView.setVisibility(View.INVISIBLE);
-            batteryTimeLayout.setVisibility(View.VISIBLE);
+            // batteryTimeLayout.setVisibility(View.VISIBLE);
+
+            orientationBtn.setVisibility(View.VISIBLE);
+            orientationBtn.setImageResource(R.drawable.baseline_screen_rotation_white_36);
+            linearBattery.setVisibility(View.VISIBLE);
+            //linearBattery.setVisibility(View.VISIBLE);
+            //menuBtn.setVisibility(View.GONE);
             if (jzDataSource.urlsMap.size() == 1) {
                 clarity.setVisibility(GONE);
             } else {
@@ -131,27 +162,49 @@ public class JzvdStd extends Jzvd {
             changeStartButtonSize((int) getResources().getDimension(cn.jzvd.R.dimen.jz_start_button_w_h_fullscreen));
         } else if (currentScreen == SCREEN_WINDOW_NORMAL
                 || currentScreen == SCREEN_WINDOW_LIST) {
+
             fullscreenButton.setImageResource(cn.jzvd.R.drawable.jz_enlarge);
             backButton.setVisibility(View.GONE);
             tinyBackImageView.setVisibility(View.INVISIBLE);
             changeStartButtonSize((int) getResources().getDimension(cn.jzvd.R.dimen.jz_start_button_w_h_normal));
-            batteryTimeLayout.setVisibility(View.GONE);
+            //batteryTimeLayout.setVisibility(View.GONE);
+            orientationBtn.setVisibility(View.VISIBLE);
+            orientationBtn.setImageResource(R.drawable.ic_menu_moreoverflow_material);
+            linearBattery.setVisibility(View.GONE);
+            //menuBtn.setVisibility(View.VISIBLE);
             clarity.setVisibility(View.GONE);
         } else if (currentScreen == SCREEN_WINDOW_TINY) {
             tinyBackImageView.setVisibility(View.VISIBLE);
             setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
                     View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
-            batteryTimeLayout.setVisibility(View.GONE);
+            //batteryTimeLayout.setVisibility(View.GONE);
+            orientationBtn.setVisibility(View.GONE);
+            linearBattery.setVisibility(View.GONE);
+            //menuBtn.setVisibility(View.VISIBLE);
+            textureViewContainer.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (currentState == CURRENT_STATE_AUTO_COMPLETE) return;
+                    if (currentScreen == SCREEN_WINDOW_FULLSCREEN) {
+                        //quit fullscreen
+                        backPress();
+                    } else {
+                        Log.d(TAG, "toFullscreenActivity [" + this.hashCode() + "] ");
+                        onEvent(JZUserAction.ON_ENTER_FULLSCREEN);
+                        startWindowFullscreen();
+                    }
+                }
+            });
             clarity.setVisibility(View.GONE);
         }
         setSystemTimeAndBattery();
 
 
-        if (tmp_test_back) {
-            tmp_test_back = false;
-            JzvdMgr.setFirstFloor(this);
-            backPress();
-        }
+        //  if (tmp_test_back) {
+        //      tmp_test_back = false;
+        //      JzvdMgr.setFirstFloor(this);
+        //      backPress();
+        //  }
     }
 
     public void changeStartButtonSize(int size) {
@@ -165,7 +218,7 @@ public class JzvdStd extends Jzvd {
 
     @Override
     public int getLayoutId() {
-        return cn.jzvd.R.layout.jz_layout_standard;
+        return R.layout.jz_layout_custom;
     }
 
     @Override
@@ -257,6 +310,8 @@ public class JzvdStd extends Jzvd {
         return super.onTouch(v, event);
     }
 
+    private boolean isPortrait = true;
+
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -293,7 +348,7 @@ public class JzvdStd extends Jzvd {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final LinearLayout layout = (LinearLayout) inflater.inflate(cn.jzvd.R.layout.jz_layout_clarity, null);
 
-            OnClickListener mQualityListener = new OnClickListener() {
+            View.OnClickListener mQualityListener = new View.OnClickListener() {
                 public void onClick(View v) {
                     int index = (int) v.getTag();
                     changeUrl(index, getCurrentPositionWhenPlaying());
@@ -323,10 +378,10 @@ public class JzvdStd extends Jzvd {
                 }
             }
 
-            clarityPopWindow = new PopupWindow(layout, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, true);
+            clarityPopWindow = new PopupWindow(layout, FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT, true);
             clarityPopWindow.setContentView(layout);
             clarityPopWindow.showAsDropDown(clarity);
-            layout.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+            layout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
             int offsetX = clarity.getMeasuredWidth() / 3;
             int offsetY = clarity.getMeasuredHeight() / 3;
             clarityPopWindow.update(clarity, -offsetX, -offsetY, Math.round(layout.getMeasuredWidth() * 2), layout.getMeasuredHeight());
@@ -346,6 +401,48 @@ public class JzvdStd extends Jzvd {
             JZMediaManager.setDataSource(jzDataSource);
             onStatePreparing();
             onEvent(JZUserAction.ON_CLICK_START_ERROR);
+        } else if (i == R.id.orientationBtn) {
+            if (currentScreen == SCREEN_WINDOW_FULLSCREEN) {
+                localBroadcastManager.sendBroadcast(new Intent(
+                        getContext().getPackageName() + ".onRequestVideoPback"));
+            } else {
+                try {
+                    ContextThemeWrapper contextThemeWrapper;
+                    if (Utils.getIsLight(getContext())) {
+                        contextThemeWrapper = new ContextThemeWrapper(v.getContext(), R.style.PopupMenuToolbarLight);
+                    } else {
+                        contextThemeWrapper = new ContextThemeWrapper(v.getContext(), R.style.PopupMenuToolbar);
+                    }
+                    PopupMenu popup = new PopupMenu(contextThemeWrapper, v);
+                    popup.getMenuInflater().inflate(R.menu.menu_video_item, popup.getMenu());
+                    popup.show();
+                    popup.setOnMenuItemClickListener(item -> {
+
+                        switch (item.getItemId()) {
+
+                            case R.id.delete:
+                                Log.d("gevmethat",getCurrentUrl().toString());
+                                //deleteSong(context, song, position);
+                                Intent intent = new Intent();
+                                intent.putExtra("gidenVideo",getCurrentUrl().toString());
+                                intent.setAction(getContext().getPackageName() + ".gidenVideo");
+                                localBroadcastManager.sendBroadcast(intent);
+
+                                break;
+
+                            case R.id.share:
+                                Share.shareVideoFile(getContext(), getCurrentUrl().toString());
+                                break;
+                            default:
+                                break;
+                        }
+                        return true;
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
@@ -474,9 +571,10 @@ public class JzvdStd extends Jzvd {
     }
 
     @Override
-    public void onProgress(int progress, long position, long duration) {
-        super.onProgress(progress, position, duration);
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        super.onProgressChanged(seekBar, progress, fromUser);
         if (progress != 0) bottomProgressBar.setProgress(progress);
+
     }
 
     @Override
@@ -504,6 +602,7 @@ public class JzvdStd extends Jzvd {
                 setAllControlsVisiblity(View.VISIBLE, View.INVISIBLE, View.VISIBLE,
                         View.INVISIBLE, View.VISIBLE, View.INVISIBLE, View.INVISIBLE);
                 updateStartImage();
+
                 break;
             case SCREEN_WINDOW_TINY:
                 break;
@@ -557,7 +656,7 @@ public class JzvdStd extends Jzvd {
                 break;
             case SCREEN_WINDOW_FULLSCREEN:
                 setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
                 break;
             case SCREEN_WINDOW_TINY:
                 break;
@@ -592,7 +691,7 @@ public class JzvdStd extends Jzvd {
                 break;
             case SCREEN_WINDOW_FULLSCREEN:
                 setAllControlsVisiblity(View.INVISIBLE, View.INVISIBLE, View.INVISIBLE,
-                        View.INVISIBLE, View.INVISIBLE, View.VISIBLE, View.INVISIBLE);
+                        View.INVISIBLE, View.INVISIBLE, View.INVISIBLE, View.INVISIBLE);
                 break;
             case SCREEN_WINDOW_TINY:
                 break;
@@ -784,7 +883,7 @@ public class JzvdStd extends Jzvd {
     public void startDismissControlViewTimer() {
         cancelDismissControlViewTimer();
         DISMISS_CONTROL_VIEW_TIMER = new Timer();
-        mDismissControlViewTimerTask = new DismissControlViewTimerTask();
+        mDismissControlViewTimerTask = new JzvdCustom.DismissControlViewTimerTask();
         DISMISS_CONTROL_VIEW_TIMER.schedule(mDismissControlViewTimerTask, 2500);
     }
 
@@ -826,9 +925,7 @@ public class JzvdStd extends Jzvd {
                     if (clarityPopWindow != null) {
                         clarityPopWindow.dismiss();
                     }
-                    if (currentScreen != SCREEN_WINDOW_TINY) {
-                        bottomProgressBar.setVisibility(View.VISIBLE);
-                    }
+
                 }
             });
         }

@@ -85,20 +85,20 @@ public class JZUtils {
     }
 
     public static void setRequestedOrientation(Context context, int orientation) {
-        if (JZUtils.getAppCompActivity(context) != null) {
-            JZUtils.getAppCompActivity(context).setRequestedOrientation(
+        if (cn.jzvd.JZUtils.getAppCompActivity(context) != null) {
+            cn.jzvd.JZUtils.getAppCompActivity(context).setRequestedOrientation(
                     orientation);
         } else {
-            JZUtils.scanForActivity(context).setRequestedOrientation(
+            cn.jzvd.JZUtils.scanForActivity(context).setRequestedOrientation(
                     orientation);
         }
     }
 
     public static Window getWindow(Context context) {
-        if (JZUtils.getAppCompActivity(context) != null) {
-            return JZUtils.getAppCompActivity(context).getWindow();
+        if (cn.jzvd.JZUtils.getAppCompActivity(context) != null) {
+            return cn.jzvd.JZUtils.getAppCompActivity(context).getWindow();
         } else {
-            return JZUtils.scanForActivity(context).getWindow();
+            return cn.jzvd.JZUtils.scanForActivity(context).getWindow();
         }
     }
 

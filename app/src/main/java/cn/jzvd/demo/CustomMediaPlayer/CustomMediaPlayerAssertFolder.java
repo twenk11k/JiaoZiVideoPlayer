@@ -5,10 +5,6 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.view.Surface;
 
-import cn.jzvd.JZMediaInterface;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JzvdMgr;
-
 /**
  * Created by Nathen on 2017/11/23.
  */

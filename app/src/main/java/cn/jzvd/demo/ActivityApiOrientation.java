@@ -8,9 +8,6 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by Nathen on 2016/12/30.
  */

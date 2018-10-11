@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by Nathen on 16/7/31.
  */

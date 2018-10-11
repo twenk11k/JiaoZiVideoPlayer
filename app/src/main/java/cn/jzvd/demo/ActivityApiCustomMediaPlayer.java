@@ -13,10 +13,6 @@ import com.bumptech.glide.Glide;
 
 import java.io.IOException;
 
-import cn.jzvd.JZDataSource;
-import cn.jzvd.JZMediaSystem;
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
 import cn.jzvd.demo.CustomMediaPlayer.CustomMediaPlayerAssertFolder;
 import cn.jzvd.demo.CustomMediaPlayer.JZExoPlayer;
 import cn.jzvd.demo.CustomMediaPlayer.JZMediaIjkplayer;

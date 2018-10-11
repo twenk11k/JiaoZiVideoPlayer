@@ -34,9 +34,6 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.video.VideoListener;
 
-import cn.jzvd.JZMediaInterface;
-import cn.jzvd.JZMediaManager;
-import cn.jzvd.JzvdMgr;
 import cn.jzvd.demo.R;
 
 /**

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 
-import cn.jzvd.JzvdStd;
-
 /**
  * Created by Nathen on 2016/11/6.
  */

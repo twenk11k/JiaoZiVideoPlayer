@@ -7,8 +7,6 @@ import android.view.MenuItem;
 
 import com.bumptech.glide.Glide;
 
-import cn.jzvd.Jzvd;
-import cn.jzvd.JzvdStd;
 import cn.jzvd.demo.CustomView.JzvdStdAutoCompleteAfterFullscreen;
 import cn.jzvd.demo.CustomView.JzvdStdMp3;
 import cn.jzvd.demo.CustomView.JzvdStdShowShareButtonAfterFullscreen;
