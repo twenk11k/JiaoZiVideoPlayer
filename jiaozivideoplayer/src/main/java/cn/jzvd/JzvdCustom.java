@@ -138,7 +138,7 @@ public class JzvdCustom extends com.ardakalan.muzikplayer.calisma.video.Jzvd  {
         fullscreenButton.setOnClickListener(this);
 
     }
-
+    public static boolean fromTiny = false;
     public void setUp(JZDataSource jzDataSource, int screen) {
         super.setUp(jzDataSource, screen);
         titleTextView.setText(jzDataSource.title);
@@ -188,9 +188,13 @@ public class JzvdCustom extends com.ardakalan.muzikplayer.calisma.video.Jzvd  {
                     if (currentScreen == SCREEN_WINDOW_FULLSCREEN) {
                         //quit fullscreen
                         backPress();
+                        Log.d("oramagoma","customifilanbu");
                     } else {
                         Log.d(TAG, "toFullscreenActivity [" + this.hashCode() + "] ");
                         onEvent(JZUserAction.ON_ENTER_FULLSCREEN);
+                        fromTiny = true;
+                        Log.d("oramagoma","customelsekardes");
+
                         startWindowFullscreen();
                     }
                 }

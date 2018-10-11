@@ -184,16 +184,29 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
 
         if (JzvdMgr.getSecondFloor() != null) {
             CLICK_QUIT_FULLSCREEN_TIME = System.currentTimeMillis();
-            if (JzvdMgr.getFirstFloor().jzDataSource.containsTheUrl(JZMediaManager.getDataSource().getCurrentUrl())) {
+            if (JzvdCustom.fromTiny || JzvdMgr.getFirstFloor().jzDataSource.containsTheUrl(JZMediaManager.getDataSource().getCurrentUrl())) {
                 Jzvd jzvd = JzvdMgr.getSecondFloor();
-                jzvd.onEvent(jzvd.currentScreen == JzvdStd.SCREEN_WINDOW_FULLSCREEN ?
-                        JZUserAction.ON_QUIT_FULLSCREEN :
-                        JZUserAction.ON_QUIT_TINYSCREEN);
+                if (JzvdCustom.fromTiny) {
+                    if (jzvd.currentScreen == JzvdStd.SCREEN_WINDOW_FULLSCREEN) {
+                        jzvd.onEvent(JZUserAction.ON_QUIT_FULLSCREEN);
+                    }
+
+                } else {
+                    jzvd.onEvent(jzvd.currentScreen == JzvdStd.SCREEN_WINDOW_FULLSCREEN ?
+                            JZUserAction.ON_QUIT_FULLSCREEN :
+                            JZUserAction.ON_QUIT_TINYSCREEN);
+
+                }
                 JzvdMgr.getFirstFloor().playOnThisJzvd();
-                Log.d("oramagoma","if1");
+                if(JzvdCustom.fromTiny){
+                    JzvdMgr.getCurrentJzvd().startWindowTiny();
+                }
+                JzvdCustom.fromTiny= false;
+
+                Log.d("oramagoma", "if1");
             } else {
                 quitFullscreenOrTinyWindow();
-                Log.d("oramagoma","else1");
+                Log.d("oramagoma", "else1");
             }
             return true;
         } else if (JzvdMgr.getFirstFloor() != null &&
@@ -201,7 +214,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
                         JzvdMgr.getFirstFloor().currentScreen == SCREEN_WINDOW_TINY)) {//以前我总想把这两个判断写到一起，这分明是两个独立是逻辑
             CLICK_QUIT_FULLSCREEN_TIME = System.currentTimeMillis();
             quitFullscreenOrTinyWindow();
-            Log.d("oramagoma","else2");
+            Log.d("oramagoma", "else2");
             return true;
         }
         return false;
@@ -1083,6 +1096,7 @@ public abstract class Jzvd extends FrameLayout implements View.OnClickListener, 
         setState(currentState);
 //        removeTextureView();
         addTextureView();
+
     }
 
     //重力感应的时候调用的函数，
